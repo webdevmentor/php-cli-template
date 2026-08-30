@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      APP_ENV: ${APP_ENV:-dev}
+      MAILER_DSN: ${MAILER_DSN:-smtp://mailpit:1025}
+    depends_on:
+      - mailpit
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "${MAILPIT_WEB_PORT:-8025}:8025"
+    environment:
+      MP_UI_AUTH: ${MAILPIT_UI_AUTH:-}
