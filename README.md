@@ -2,6 +2,8 @@
 
 Ein modernes, leichtgewichtiges Template für PHP CLI-Anwendungen mit Docker, Docker Compose, Mailpit und PHPUnit.
 
+Ein integriertes CLI-Beispielskript steht unter `bin/example` bereit. Nach dem Verbinden mit dem Container via `make attach` kann das Skript mit `bin/example` ausgeführt werden – alle weiteren Funktionen und Optionen lassen sich mit `bin/example --help` anzeigen.
+
 ---
 
 ## 🚀 Features
