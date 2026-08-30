@@ -10,6 +10,7 @@ services:
     environment:
       APP_ENV: ${APP_ENV:-dev}
       MAILER_DSN: ${MAILER_DSN:-smtp://mailpit:1025}
+    command: ["sleep", "infinity"]
     depends_on:
       - mailpit
 
