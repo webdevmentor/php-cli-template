@@ -1,6 +1,6 @@
-.PHONY: install start stop attach logs tests help
+.PHONY: install start stop restart rebuild attach logs tests help
 
-help: ## Show this help
+help: ## Diese Hilfe anzeigen
 	@echo "Usage:"
 	@echo "  make <target>"
 	@echo ""
@@ -8,7 +8,7 @@ help: ## Show this help
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  %-12s %s\n", $$1, $$2}'
 
-install: .env ## Initialize the development environment
+install: .env ## Entwicklungsumgebung initialisieren
 	docker compose build
 	docker compose run --rm app composer install
 	$(MAKE) stop
@@ -16,18 +16,32 @@ install: .env ## Initialize the development environment
 .env:
 	cp .env.example .env
 
-start: ## Start the development environment
+start: ## Entwicklungsumgebung starten
 	docker compose up -d
 	$(MAKE) attach
 
-stop: ## Stop the development environment
+stop: ## Entwicklungsumgebung stoppen
 	docker compose down
 
-attach: ## Attach to the PHP container
+_composer-clear-cache:
+	docker compose run --rm app composer clear-cache
+
+restart: ## Entwicklungsumgebung neu starten
+	$(MAKE) stop
+	$(MAKE) start
+
+rebuild: ## Container und Abhängigkeiten vollständig neu bauen
+	$(MAKE) stop
+	docker compose build --no-cache
+	$(MAKE) _composer-clear-cache
+	docker compose run --rm app composer install
+	$(MAKE) start
+
+attach: ## Mit dem PHP-Container verbinden
 	docker compose exec -it app bash
 
-logs: ## Show logs, optionally for a specific service
+logs: ## Logs anzeigen, optional für einen bestimmten Service
 	docker compose logs -f $(SERVICE)
 
-tests: ## Run the test suite
+tests: ## Testsuite ausführen
 	docker compose exec app composer test
