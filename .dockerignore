@@ -1,0 +1,15 @@
+.git/
+.github/
+
+.idea/
+.vscode/
+
+vendor/
+
+.env
+.env.*
+!.env.example
+
+*.log
+.DS_Store
+Thumbs.db
