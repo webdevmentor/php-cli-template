@@ -1,0 +1,43 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
+
+$shortOptions = 'i';
+$longOptions = [
+    'info',
+    'version',
+    'help',
+];
+
+$options = getopt($shortOptions, $longOptions);
+
+if (isset($options['help'])) {
+    echo <<<HELP
+Usage:
+  bin/example [options]
+
+Options:
+  -i, --info       PHP-Informationen anzeigen (phpinfo)
+      --version    PHP-Version anzeigen
+      --help       Diese Hilfe anzeigen
+
+HELP;
+    exit(0);
+}
+
+if (isset($options['i']) || isset($options['info'])) {
+    phpinfo();
+    exit(0);
+}
+
+if (isset($options['version'])) {
+    echo 'PHP ' . PHP_VERSION . PHP_EOL;
+    exit(0);
+}
+
+echo 'Hello World' . PHP_EOL;
