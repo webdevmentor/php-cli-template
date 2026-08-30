@@ -1,4 +1,4 @@
-.PHONY: install start stop restart rebuild attach logs tests help
+.PHONY: install shell stop rebuild clean logs tests help
 
 help: ## Diese Hilfe anzeigen
 	@echo "Usage:"
@@ -16,29 +16,24 @@ install: .env ## Entwicklungsumgebung initialisieren
 .env:
 	cp .env.example .env
 
-start: ## Entwicklungsumgebung starten
+shell: ## Container starten und mit dem PHP-Container verbinden
 	docker compose up -d
-	$(MAKE) attach
+	docker compose exec -it app bash
 
-stop: ## Entwicklungsumgebung stoppen
+stop: ## Container stoppen
+	docker compose stop
+
+clean: ## Container entfernen
 	docker compose down
 
 _composer-clear-cache:
 	docker compose run --rm app composer clear-cache
 
-restart: ## Entwicklungsumgebung neu starten
-	$(MAKE) stop
-	$(MAKE) start
-
 rebuild: ## Container und Abhängigkeiten vollständig neu bauen
 	$(MAKE) stop
 	docker compose build --no-cache
 	$(MAKE) _composer-clear-cache
-	docker compose run --rm app composer install
-	$(MAKE) start
-
-attach: ## Mit dem PHP-Container verbinden
-	docker compose exec -it app bash
+	docker compose run --rm app composer install --no-cache
 
 logs: ## Logs anzeigen, optional für einen bestimmten Service
 	docker compose logs -f $(SERVICE)

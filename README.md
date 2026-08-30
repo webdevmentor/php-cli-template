@@ -2,7 +2,7 @@
 
 Ein modernes, leichtgewichtiges Template für PHP CLI-Anwendungen mit Docker, Docker Compose, Mailpit und PHPUnit.
 
-Ein integriertes CLI-Beispielskript steht unter `bin/example` bereit. Nach dem Verbinden mit dem Container via `make attach` kann das Skript mit `bin/example` ausgeführt werden – alle weiteren Funktionen und Optionen lassen sich mit `bin/example --help` anzeigen.
+Ein integriertes CLI-Beispielskript steht unter `bin/example` bereit. Nach dem Verbinden mit dem Container via `make shell` kann das Skript mit `bin/example` ausgeführt werden – alle weiteren Funktionen und Optionen lassen sich mit `bin/example --help` anzeigen.
 
 ---
 
@@ -41,10 +41,10 @@ make install
 Startet die Container im Hintergrund und öffnet direkt eine interaktive Shell im PHP-Container:
 
 ```bash
-make start
+make shell
 ```
 
-Stoppt alle laufenden Container:
+Stoppt alle laufenden Container (z. B. beim Projektwechsel, um Ressourcen freizugeben):
 
 ```bash
 make stop
